@@ -15,22 +15,19 @@ This repo describes end to end tests that simulate user scenarios around `spk`. 
 ## Orchestrating the integration tests with Azure Dev Ops
 
 1. A yaml file defining an Azure pipeline. Tasks within this yaml file will orchestrate the setup/installation of any binaries. 
-
 2. Next, yaml file tasks will use a configuration that can bootstrap `spk` with the knowledge of the testing environment.
-
 3. Finally, a yaml task will call `spk` commands the same way an `spk` user would. 
-
 4. Depending on the duration of the commands, a yaml task in the Azure pipeline will do an _assertion_ of expected results and exit the pipeline with a success or failure result. 
-
 5. Azure DevOps has many hooks to allow notification of the pipeline result.
 
 ## Test Scenarios
 
 ### Create a Service
 **High level steps that ignore details:**
-1. Make sure `spk` is initialized with knowledge of the test environment. 
-2. Navigate to the appropriate to mono-repo root directory.
-2. Call the `spk` **create service** command with any appropriate additional flags and arguments.
+1. Make sure `spk` is [initialized](https://github.com/CatalystCode/bedrock-end-to-end-dx#initializing-spk-tool) with knowledge of the test environment. 
+2. Navigate to the appropriate to [mono-repo](https://github.com/CatalystCode/bedrock-end-to-end-dx#adopting-bedrock-in-existing-application-monorepo) root directory.
+2. Call the `spk` [service create](https://github.com/CatalystCode/bedrock-end-to-end-dx#adding-a-service) command with any appropriate additional flags and arguments.
+3. Automate the any git `add`, `commit`, and `push` commands (skip PR for automation)
 3. Assert that a pipeline is created and it's build completed successfully on the Azure DevOps project
 
 ### _More to scenarios come..._
@@ -56,17 +53,3 @@ We should be able to handle multiple tests at once. If necessary we can gate tes
 > _How do we get SPK and additional tool on the build agent?_
 
 The provided bash script will have the ability to download the latest public _release_ of SPK. In the future we will consider providing a Docker image that for a custom AzDO build agent that has all components bundled (SPK, Az CLI, Terraform, etc)
-
----
-
-- Repo for Terraform environment in Az Repo?
-- Triggering 
-    - On new SPK release?
-    - On each check in?
-    - At least once daily
-- Use bash tasks to call bash script
-- Reporting and Alerting
-    - Test time trends 
-    - Alert to Bedrock/SPK contributors when test fails 
-    - Alert on Teams or Slack
-    - Have a build badge for this on SPK repo
